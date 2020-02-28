@@ -10,6 +10,7 @@ import {
 	MenuItem
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -20,19 +21,23 @@ const useStyles = makeStyles(theme => ({
 	},
 	title: {
 		flexGrow: 1
+	},
+	loginLink: {
+		color: 'rgba(0, 0, 0, 0.87)',
+		textDecoration: 'none'
 	}
 }));
 
 export default props => {
 	const classes = useStyles();
-    const handleClick = event => {
-        props.toggleLoginMenyHandler();
-        props.setAnchorEl(event.currentTarget)
-      };
-      const handleClose = () => {
-        props.toggleLoginMenyHandler();
-          props.setAnchorEl(null)
-      }
+	const handleClick = event => {
+		props.toggleLoginMenyHandler();
+		props.setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		props.toggleLoginMenyHandler();
+		props.setAnchorEl(null);
+	};
 	return (
 		<AppBar position='static'>
 			<Toolbar>
@@ -48,19 +53,26 @@ export default props => {
 				<Typography variant='h6' className={classes.title}>
 					Release Event App
 				</Typography>
-				<Button color='inherit' aria-controls="login-menu" onClick={handleClick}>
-					Login
+				<Button color='inherit' aria-controls='login-menu' onClick={handleClick}>
+					{props.isAuthenticated ? 'Logout' : 'Login'}
 				</Button>
 				<Menu
-                    id='login-menu'	
-                    anchorEl={props.anchorEl}				
+					id='login-menu'
+					anchorEl={props.anchorEl}
 					keepMounted
 					open={props.isLoginMenu}
 					onClose={handleClose}
 				>
-					<MenuItem onClick={handleClose}>Login</MenuItem>
-					<MenuItem onClick={handleClose}>Register</MenuItem>
-					<MenuItem onClick={handleClose}>Logout</MenuItem>
+					{ !props.isAuthenticated ? <div><Link to='/sign-in' className={classes.loginLink}>
+						<MenuItem onClick={handleClose}>Login</MenuItem>
+					</Link>
+					<Link  to='/sign-up' className={classes.loginLink}>
+						<MenuItem onClick={handleClose}>Register</MenuItem>
+					</Link></div> : <Link to='/' className={classes.loginLink}>
+						<MenuItem onClick={props.logout}>Logout</MenuItem>
+					</Link>}					
+					
+					
 				</Menu>
 			</Toolbar>
 		</AppBar>

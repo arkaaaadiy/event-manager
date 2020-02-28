@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import AppBar from '../../components/AppBar/AppBar';
 // import { connect } from 'react-redux';
 import { AppDrawer } from '../../components/Drawer/Drawer';
+import { connect } from 'react-redux';
+import { logout } from '../../store/actions/auth';
 
 class Layout extends Component {
 	state = {
@@ -30,17 +32,20 @@ class Layout extends Component {
 		this.setState({
 			menu: false
 		});
-	};
+    };
+    
 	render() {
 		return (
 			<>
 				<AppBar
 					isOpen={this.state.menu}
 					onToggle={this.toggleMenyHandler}
+					isAuthenticated={this.props.isAuthenticated}
 					isLoginMenu={this.state.isLoginMenu}
                     toggleLoginMenyHandler={this.toggleLoginMenyHandler}
                     anchorEl={this.state.anchorEl}
-                    setAnchorEl={this.setAnchorEl}
+					setAnchorEl={this.setAnchorEl}
+					logout={this.props.logout}
 				/>
 				<AppDrawer open={this.state.menu} onClose={this.menuCloseHandler} />
 				<main>{this.props.children}</main>
@@ -48,5 +53,11 @@ class Layout extends Component {
 		);
 	}
 }
+function mapStateToProps(state) {
+	return {
+		isAuthenticated: !!state.auth.token
+	}
+}
 
-export default Layout;
+
+export default connect(mapStateToProps,{logout})(Layout);

@@ -1,7 +1,7 @@
 import React from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles, Typography, Box } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles({
@@ -21,9 +21,11 @@ export const AppDrawer = props => {
 	const classes = useStyles();
 	return (
 		<Drawer open={props.open} onClose={props.onClose}>
+			<Box m={3}>
 			<Typography variant='h6' className={classes.title}>
 				Release Event App
 			</Typography>
+			</Box>
 			<div onClick={props.onClose}>
 				<NavLink
 					to='/'
@@ -50,7 +52,7 @@ export const AppDrawer = props => {
 					className={classes.link}
 				>
 					<MenuItem>Просмотреть мои события</MenuItem>
-				</NavLink>
+				</NavLink>				
 			</div>
 		</Drawer>
 	);
