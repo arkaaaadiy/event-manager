@@ -3,12 +3,12 @@ import Layout from './hoc/Layout/Layout';
 import { Switch, Route, Redirect } from 'react-router';
 import Home from './containers/Home/Home';
 import EventList from './containers/EventList/EventList';
-import CreateEvent from './containers/CreateEvent/CreateEvent'
 import SignIn from './containers/Auth/SignIn'
 import SignUp from './containers/Auth/SignUp'
 import { StylesProvider } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import {autoLogin} from './store/actions/auth'
+import EventCreator from './containers/EventCreator/EventCreator';
 
 
 class App extends Component{
@@ -30,9 +30,9 @@ class App extends Component{
     if (this.props.isAuthenticated) {
       routes = (
         <Switch>        
-        <Route path={'/create-event'} component={CreateEvent} />
-        <Route path={'/event-list'} component={EventList} />
-        <Route path={'/'} component={Home} />
+        <Route path='/create-event' component={EventCreator} />
+        <Route path='/event-list' component={EventList} />
+        <Route path='/' component={Home} />
         <Redirect to='/' />
       </Switch>
       )

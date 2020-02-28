@@ -63,16 +63,20 @@ export default props => {
 					open={props.isLoginMenu}
 					onClose={handleClose}
 				>
-					{ !props.isAuthenticated ? <div><Link to='/sign-in' className={classes.loginLink}>
-						<MenuItem onClick={handleClose}>Login</MenuItem>
-					</Link>
-					<Link  to='/sign-up' className={classes.loginLink}>
-						<MenuItem onClick={handleClose}>Register</MenuItem>
-					</Link></div> : <Link to='/' className={classes.loginLink}>
-						<MenuItem onClick={props.logout}>Logout</MenuItem>
-					</Link>}					
-					
-					
+					{!props.isAuthenticated ? (
+						<div>
+							<Link to='/sign-in' className={classes.loginLink}>
+								<MenuItem onClick={handleClose}>Login</MenuItem>
+							</Link>
+							<Link to='/sign-up' className={classes.loginLink}>
+								<MenuItem onClick={handleClose}>Register</MenuItem>
+							</Link>
+						</div>
+					) : (
+						<Link to='/' className={classes.loginLink}>
+							<MenuItem onClick={props.logout}>Logout</MenuItem>
+						</Link>
+					)}
 				</Menu>
 			</Toolbar>
 		</AppBar>

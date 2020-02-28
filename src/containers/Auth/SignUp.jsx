@@ -78,7 +78,8 @@ class SignUp extends Component {
 				name: 'password',
 				autoComplete: 'current-password',
 				variant: 'outlined',
-				errorMessage: 'Введите корректный пароль',
+        errorMessage: 'Введите пароль длиннее 5 символов',
+        error: false,
 				fullWidth: true,
 				valid: false,
 				touched: false,
@@ -179,7 +180,7 @@ class SignUp extends Component {
 					</Grid>
 				);
       }
-      return null;
+      
 		});
 	}
 
