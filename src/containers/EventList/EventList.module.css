@@ -1,0 +1,7 @@
+.tabel{
+    min-width: 650px;
+}
+.loading{
+    display: flex;
+    justify-content: center;
+}

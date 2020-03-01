@@ -137,7 +137,7 @@ export class EventCreator extends Component {
 			eventName: eventName.value,
 			descriptionName: descriptionName.value,
 			typeEvent: typeEvent.value,
-      dateEvent: dateEvent.value      
+			dateEvent: dateEvent.value
 		};
 
 		this.props.fetchUserEvent(userEvent);
@@ -170,7 +170,7 @@ export class EventCreator extends Component {
 		const dataPicker = (
 			<Grid item xs={12}>
 				<MuiPickersUtilsProvider utils={DateFnsUtils}>
-					<KeyboardDatePicker						
+					<KeyboardDatePicker
 						format='dd/MM/yyyy'
 						margin='normal'
 						id='date-event-inline'
@@ -200,8 +200,8 @@ export class EventCreator extends Component {
 									id='eventName'
 									name='eventName'
 									label='Название события'
-                  fullWidth
-                  value={this.state.formControls['eventName'].value}
+									fullWidth
+									value={this.state.formControls['eventName'].value}
 									onChange={event => this.onChangeHandler(event, 'eventName')}
 								/>
 							</Grid>
@@ -210,15 +210,19 @@ export class EventCreator extends Component {
 									id='descriptionName'
 									name='descriptionName'
 									label='Описание события'
-                  fullWidth
-                  value={this.state.formControls['descriptionName'].value}
+									fullWidth
+									value={this.state.formControls['descriptionName'].value}
 									onChange={event => this.onChangeHandler(event, 'descriptionName')}
 								/>
 							</Grid>
 							{dataPicker}
 
 							<Grid item className={classes.buttons}>
-								<Button variant='contained' color='primary' onClick={this.addEventHandler}>
+								<Button
+									variant='contained'
+									color='primary'
+									onClick={this.addEventHandler}
+								>
 									Создать
 								</Button>
 							</Grid>

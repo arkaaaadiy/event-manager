@@ -42,7 +42,7 @@ export function autoLogout(time) {
     return dispatch => {
         setTimeout(() => {
             logout()
-        }, time * 1000);
+        }, time * 1000 * 24);
     }
 }
 
