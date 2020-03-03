@@ -18,41 +18,26 @@ const useStyles = makeStyles({
 });
 
 export const AppDrawer = props => {
-	const classes = useStyles();
+	const classes = useStyles();	
 	return (
 		<Drawer open={props.open} onClose={props.onClose}>
 			<Box m={3}>
-			<Typography variant='h6' className={classes.title}>
-				Release Event App
-			</Typography>
+				<Typography variant='h6' className={classes.title}>
+					EVENT MANAGER
+				</Typography>
 			</Box>
 			<div onClick={props.onClose}>
-				<NavLink
-					to='/'
-					className={classes.link}
-					activeClassName={classes.selected}
-					exact
-				>
-					<MenuItem className={classes.list}>Главная</MenuItem>
-				</NavLink>
-
-				<NavLink
-					to='/create-event'
-					exact
-					activeClassName={classes.selected}
-					className={classes.link}
-				>
-					<MenuItem>Создание события</MenuItem>
-				</NavLink>
-
-				<NavLink
-					to='/event-list'
-					exact
-					activeClassName={classes.selected}
-					className={classes.link}
-				>
-					<MenuItem>Просмотреть мои события</MenuItem>
-				</NavLink>				
+				{props.links.map(link => (
+					<NavLink
+						key={link.name}
+						to={link.path}
+						className={classes.link}
+						activeClassName={classes.selected}
+						exact
+					>
+						<MenuItem className={classes.list}>{link.name}</MenuItem>
+					</NavLink>
+				))}
 			</div>
 		</Drawer>
 	);

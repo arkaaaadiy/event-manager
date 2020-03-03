@@ -56,18 +56,23 @@ export function logout() {
 }
 export function autoLogin() {
     return dispatch => {
-        const token = localStorage.getItem('token')
-        const userId = localStorage.getItem('userId')
-        if (!token) {
-            dispatch(logout())
-        } else {
-            const expirationDate = new Date(localStorage.getItem('expirationDate'))
-            if (expirationDate <= new Date()) {
-                dispatch(logout())
-            } else {
-                dispatch(authSuccess(token,userId))
-                dispatch(autoLogout((expirationDate.getTime() - new Date().getTime()) / 1000))
-            }
+        return new Promise(function (resolve, reject) {
+                const token = localStorage.getItem('token')
+                const userId = localStorage.getItem('userId')
+                if (!token) {
+                    dispatch(logout())
+                    reject()
+                } else {
+                    const expirationDate = new Date(localStorage.getItem('expirationDate'))
+                    if (expirationDate <= new Date()) {
+                        dispatch(logout())
+                        reject()
+                    } else {
+                        dispatch(authSuccess(token, userId))
+                        dispatch(autoLogout((expirationDate.getTime() - new Date().getTime()) / 1000))
+                        resolve()
+                    }
+                }
+            })
         }
-    }
-}
+    }    

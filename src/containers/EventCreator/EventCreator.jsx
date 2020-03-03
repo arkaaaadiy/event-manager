@@ -28,6 +28,7 @@ function createFormControls() {
 			fullWidth: true,
 			required: true,
 			error: false,
+			errorMessage: 'Поле должно быть заполнено',
 			valid: false,
 			touched: false,
 			validation: {
@@ -40,7 +41,7 @@ function createFormControls() {
 			id: 'descriptionName',
 			name: 'descriptionName',
 			fullWidth: true,
-			errorMessage: '',
+			errorMessage: 'Максимальная длинна 250',
 			error: false,
 			valid: true,
 			touched: false,
@@ -133,23 +134,34 @@ export class EventCreator extends Component {
 			dateEvent
 		} = this.state.formControls;
 
+		if (!eventName.valid) {
+			const formControls = { ...this.state.formControls };
+			formControls['eventName'].error = true;
+			this.setState({ formControl: formControls });
+		}
 		const userEvent = {
 			eventName: eventName.value,
 			descriptionName: descriptionName.value,
 			typeEvent: typeEvent.value,
 			dateEvent: dateEvent.value
 		};
+		if (this.state.isFormValid) {
+			this.props.fetchUserEvent(userEvent);
 
-		this.props.fetchUserEvent(userEvent);
-
-		this.setState({
-			ifFormValid: false,
-			formControls: createFormControls()
-		});
+			this.setState({
+				isFormValid: false,
+				formControls: createFormControls()
+			});
+		} else {
+			return;
+		}
 	};
-	render() {
+
+	renderInputs = () => {};
+
+	render() {		
 		const select = (
-			<Grid item xs={12}>
+			<Grid item xs={12} sm={4}>
 				<FormControl fullWidth className={classes.formControl}>
 					<InputLabel id='typeEvent'>Тип события</InputLabel>
 					<Select
@@ -194,9 +206,15 @@ export class EventCreator extends Component {
 					<form>
 						<Grid container spacing={2}>
 							{select}
-							<Grid item xs={12} sm={12}>
+							<Grid item xs={12} sm={8}>
 								<TextField
 									required
+									error={this.state.formControls['eventName'].error}
+									helperText={
+										this.state.formControls['eventName'].error
+											? this.state.formControls['eventName'].errorMessage
+											: null
+									}
 									id='eventName'
 									name='eventName'
 									label='Название события'

@@ -78,8 +78,8 @@ class SignUp extends Component {
 				name: 'password',
 				autoComplete: 'current-password',
 				variant: 'outlined',
-        errorMessage: 'Введите пароль длиннее 5 символов',
-        error: false,
+				errorMessage: 'Введите пароль длиннее 5 символов',
+				error: false,
 				fullWidth: true,
 				valid: false,
 				touched: false,
@@ -95,14 +95,13 @@ class SignUp extends Component {
 	};
 
 	registerHandler = () => {
-    if (this.state.isFormValid) {
-      this.props.auth(
-        this.state.formControls.email.value,
-        this.state.formControls.password.value,
-        false
-      );
-    }
-		
+		if (this.state.isFormValid) {
+			this.props.auth(
+				this.state.formControls.email.value,
+				this.state.formControls.password.value,
+				false
+			);
+		}
 	};
 	submitHandler = event => {
 		event.preventDefault();
@@ -129,10 +128,10 @@ class SignUp extends Component {
 	}
 
 	onChangeHandler = (event, controlName) => {
-		const formControls = { ...this.state.formControls };		
+		const formControls = { ...this.state.formControls };
 		if (controlName === 'accept') {
-      const control = formControls[controlName];      		
-			control.valid = event.target.checked;			
+			const control = formControls[controlName];
+			control.valid = event.target.checked;
 		} else {
 			const control = { ...formControls[controlName] };
 			control.touched = true;
@@ -154,7 +153,6 @@ class SignUp extends Component {
 			isFormValid
 		});
 	};
-
 
 	renderInputs() {
 		return Object.keys(this.state.formControls).map((controlName, index) => {
@@ -179,8 +177,8 @@ class SignUp extends Component {
 						/>
 					</Grid>
 				);
-      }
-      
+			}
+			return null
 		});
 	}
 

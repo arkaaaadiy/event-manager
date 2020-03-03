@@ -50,9 +50,8 @@ export default props => {
 				>
 					<MenuIcon />
 				</IconButton>
-				<Typography variant='h6' className={classes.title}>
-					Release Event App
-				</Typography>
+				<Typography className={classes.title}>EVENT MANAGER</Typography>
+
 				<Button color='inherit' aria-controls='login-menu' onClick={handleClick}>
 					{props.isAuthenticated ? 'Logout' : 'Login'}
 				</Button>

@@ -35,6 +35,29 @@ class Layout extends Component {
     };
     
 	render() {
+
+		let links = [
+			{
+				path: '/',
+				name: 'Главная'
+			}		
+		];
+		if (this.props.isAuthenticated) {			
+			links = [
+				{
+					path: '/',
+					name: 'Главная'
+				},
+				{
+					path: '/create-event',
+					name: 'Создание события'
+				},
+				{
+					path: '/event-list',
+					name: 'Просмотреть мои события'
+				}
+			];
+		}
 		return (
 			<>
 				<AppBar
@@ -47,7 +70,7 @@ class Layout extends Component {
 					setAnchorEl={this.setAnchorEl}
 					logout={this.props.logout}
 				/>
-				<AppDrawer open={this.state.menu} onClose={this.menuCloseHandler} />
+				<AppDrawer open={this.state.menu} onClose={this.menuCloseHandler} links={links}  />
 				<main>{this.props.children}</main>
 			</>
 		);
