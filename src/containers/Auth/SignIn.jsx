@@ -84,22 +84,28 @@ class SignIn extends Component {
 					required: true,
 					minLength: 6
 				}
-			},
+			}
 			// accept: {
 			// 	valid: false
 			// }
 		}
 	};
 
-	loginHandler = () => {    
-    if (this.state.isFormValid && (this.props.token === null)) {
-      this.props.auth(
-        this.state.formControls.email.value,
-        this.state.formControls.password.value,
-        true
-      );
-    }
-		
+	loginHandler = () => {	
+		const formControls = {...this.state.formControls} ;
+		Object.keys(formControls).forEach(name => {
+			formControls[name].error = !this.state.isFormValid;
+		});
+		this.setState({
+			formControls,			
+		});
+		if (this.state.isFormValid && this.props.token === null) {
+			this.props.auth(
+				this.state.formControls.email.value,
+				this.state.formControls.password.value,
+				true
+			);
+		}
 	};
 	submitHandler = event => {
 		event.preventDefault();
@@ -126,10 +132,10 @@ class SignIn extends Component {
 	}
 
 	onChangeHandler = (event, controlName) => {
-		const formControls = { ...this.state.formControls };		
+		const formControls = { ...this.state.formControls };
 		if (controlName === 'accept') {
-      const control = formControls[controlName];      		
-			control.valid = event.target.checked;			
+			const control = formControls[controlName];
+			control.valid = event.target.checked;
 		} else {
 			const control = { ...formControls[controlName] };
 			control.touched = true;
@@ -152,31 +158,29 @@ class SignIn extends Component {
 		});
 	};
 
-
 	renderInputs() {
 		return Object.keys(this.state.formControls).map((controlName, index) => {
 			const control = this.state.formControls[controlName];
-			
-				return (
-					<Grid key={index} item xs={control.xs} sm={control.sm}>
-						<TextField
-							variant={control.variant}
-							required
-							fullWidth={control.fullWidth}
-							id={control.name}
-							label={control.label}
-							error={control.error}
-							helperText={control.error ? control.errorMessage : ''}
-							name={control.name}
-							type={control.type}
-							autoComplete={control.autoComplete}
-							onChange={event => {
-								this.onChangeHandler(event, controlName);
-							}}
-						/>
-					</Grid>
-				);
-			
+
+			return (
+				<Grid key={index} item xs={control.xs} sm={control.sm}>
+					<TextField
+						variant={control.variant}
+						required
+						fullWidth={control.fullWidth}
+						id={control.name}
+						label={control.label}
+						error={control.error}
+						helperText={control.error ? control.errorMessage : ''}
+						name={control.name}
+						type={control.type}
+						autoComplete={control.autoComplete}
+						onChange={event => {
+							this.onChangeHandler(event, controlName);
+						}}
+					/>
+				</Grid>
+			);
 		});
 	}
 
@@ -221,11 +225,11 @@ class SignIn extends Component {
 							Sign In
 						</Button>
 						<Grid container justify='flex-end'>
-            <Grid item xs>
-              <Link to='/' variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
+							<Grid item xs>
+								<Link to='/' variant='body2'>
+									Forgot password?
+								</Link>
+							</Grid>
 							<Grid item>
 								<Link to='/sign-up'>Don't have an account? Sign up</Link>
 							</Grid>
@@ -237,9 +241,8 @@ class SignIn extends Component {
 	}
 }
 function mapStateToProps(state) {
-  return {
-    token: state.auth.token
-  }
+	return {
+		token: state.auth.token
+	};
 }
 export default connect(mapStateToProps, { auth })(SignIn);
-

@@ -95,6 +95,13 @@ class SignUp extends Component {
 	};
 
 	registerHandler = () => {
+		const formControls = {...this.state.formControls} ;
+		Object.keys(formControls).forEach(name => {
+			formControls[name].error = !this.state.isFormValid;
+		});
+		this.setState({
+			formControls,			
+		});
 		if (this.state.isFormValid) {
 			this.props.auth(
 				this.state.formControls.email.value,

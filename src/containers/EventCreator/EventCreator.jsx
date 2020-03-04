@@ -23,6 +23,8 @@ function createFormControls() {
 	return {
 		eventName: {
 			value: '',
+			xs: 12,
+			sm: 8,
 			id: 'eventName',
 			name: 'eventName',
 			fullWidth: true,
@@ -38,6 +40,7 @@ function createFormControls() {
 		},
 		descriptionName: {
 			value: '',
+			xs: 12,
 			id: 'descriptionName',
 			name: 'descriptionName',
 			fullWidth: true,
@@ -103,7 +106,7 @@ export class EventCreator extends Component {
 		control.touched = true;
 		if (controlName === 'dateEvent') {
 			control.value = event;
-			control.valid = !(event === new Date());
+			control.valid = event > new Date();
 		} else {
 			control.value = event.target.value;
 			control.valid = this.validateControl(control.value, control.validation);
@@ -137,7 +140,12 @@ export class EventCreator extends Component {
 		if (!eventName.valid) {
 			const formControls = { ...this.state.formControls };
 			formControls['eventName'].error = true;
-			this.setState({ formControl: formControls });
+			this.setState({ formControls: formControls });
+		}
+		if (!dateEvent.valid) {
+			const formControls = { ...this.state.formControls };
+			formControls['dateEvent'].error = true;
+			this.setState({ formControls: formControls });
 		}
 		const userEvent = {
 			eventName: eventName.value,
@@ -159,7 +167,7 @@ export class EventCreator extends Component {
 
 	renderInputs = () => {};
 
-	render() {		
+	render() {
 		const select = (
 			<Grid item xs={12} sm={4}>
 				<FormControl fullWidth className={classes.formControl}>
@@ -178,7 +186,7 @@ export class EventCreator extends Component {
 					</Select>
 				</FormControl>
 			</Grid>
-		);
+		);		
 		const dataPicker = (
 			<Grid item xs={12}>
 				<MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -188,6 +196,9 @@ export class EventCreator extends Component {
 						id='date-event-inline'
 						name='dateEvent'
 						label='Введите дату события'
+						error={this.state.formControls['dateEvent'].error ? true : false}
+						helperText={this.state.formControls['dateEvent'].error ? 'Введите не сегодняшнюю дату': ''}
+						minDate={new Date()}
 						value={this.state.formControls['dateEvent'].value}
 						onChange={this.handleDateChange}
 						KeyboardButtonProps={{
@@ -228,6 +239,12 @@ export class EventCreator extends Component {
 									id='descriptionName'
 									name='descriptionName'
 									label='Описание события'
+									error={this.state.formControls['descriptionName'].error}
+									helperText={
+										this.state.formControls['descriptionName'].error
+											? this.state.formControls['descriptionName'].errorMessage
+											: null
+									}
 									fullWidth
 									value={this.state.formControls['descriptionName'].value}
 									onChange={event => this.onChangeHandler(event, 'descriptionName')}
