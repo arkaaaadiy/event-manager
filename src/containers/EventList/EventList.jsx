@@ -6,25 +6,26 @@ import {
 	Box
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { fetchUserEventList, deleteUserEvent } from '../../store/actions/eventList';
+import {
+	fetchUserEventList,
+	deleteUserEvent
+} from '../../store/actions/eventList';
 import classes from './EventList.module.css';
-import { formatDistance } from 'date-fns';
-import { ru } from 'date-fns/locale';
 import InsetDividers from '../../components/InsertDividers/InsertDividers';
+import { Link } from 'react-router-dom';
+import { rangeDate } from '../../helpers/rangeDate';
 
-function rangeDate(date) {
-	return formatDistance(new Date(date), new Date(), { locale: ru });
-}
+
 
 class EventList extends Component {
 	componentDidMount() {
 		this.props.fetchUserEventList();
 	}
-	deleteEvent = (id)=>{		
-		this.props.deleteUserEvent(id)
-	}
+	deleteEvent = id => {
+		this.props.deleteUserEvent(id);
+	};
 	renderEvent() {
-		return this.props.events.map(event => {			
+		return this.props.events.map(event => {
 			return (
 				<InsetDividers
 					key={event.id}
@@ -51,8 +52,12 @@ class EventList extends Component {
 					<div className={classes.loading}>
 						<CircularProgress size={100} />
 					</div>
-				) : (
+				) : this.props.events.length !== 0 ? (
 					this.renderEvent()
+				) : (
+					<Typography variant='subtitle1' component='p' align='center'>
+						Список событий пока пуст.<Link to='/create-event'>Добавить</Link>
+					</Typography>
 				)}
 			</Container>
 		);
@@ -64,4 +69,7 @@ function mapStateToProps(state) {
 		loading: state.eventList.loading
 	};
 }
-export default connect(mapStateToProps, { fetchUserEventList, deleteUserEvent })(EventList);
+export default connect(mapStateToProps, {
+	fetchUserEventList,
+	deleteUserEvent
+})(EventList);

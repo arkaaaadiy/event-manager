@@ -8,12 +8,14 @@ import {
 } from "./ActionType"
 import axios from "../../API/axiosAPI"
 
-export function fetchUserEventList() {
+export function fetchUserEventList(home = false) {
     return async (dispatch) => {
         dispatch(fetchUserEventListStart())
         try {
-            const data = await axios.get(`${localStorage.getItem('userId')}/events.json`).then(response => response.data)
-
+            let userID = null
+            home ? userID = `wsSJDYXMKTaEkO62hoX2LV8gJwh1` : userID = localStorage.getItem('userId')
+            
+            const data = await axios.get(`${userID}/events.json`).then(response => response.data)
             const events = []
 
             Object.entries(data).forEach((key, value) => {
@@ -28,7 +30,11 @@ export function fetchUserEventList() {
         }
     }
 }
-
+export function fetchHomeEventList() {
+    return (dispatch) => {
+    dispatch(fetchUserEventList(true))
+    }
+}
 export function deleteUserEvent(id) {
     return async (dispatch) => {
         dispatch(startDeleteEvent())

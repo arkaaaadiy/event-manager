@@ -13,43 +13,12 @@ import classes from './SignUp.module.css';
 import { connect } from 'react-redux';
 import { auth } from '../../store/actions/auth';
 import is from 'is_js';
+import { FormControlLabel, Checkbox } from '@material-ui/core';
 
 class SignIn extends Component {
 	state = {
 		isFormValid: false,
-		formControls: {
-			// fname: {
-			// 	value: '',
-			//   xs: 12,
-			//   sm: 6,
-			// 	name: 'firstName',
-			// 	autoComplete: 'fname',
-			// 	variant: 'outlined',
-			// 	label: 'Введите имя',
-			// 	errorMessage: 'Введите корректный email',
-			// 	fullWidth: true,
-			// 	valid: false,
-			// 	touched: false,
-			// 	validation: {
-			// 		required: true,
-			// 	}
-			// },
-			// lname: {
-			// 	value: '',
-			//   xs: 12,
-			//   sm: 6,
-			// 	name: 'firstName',
-			// 	autoComplete: 'fname',
-			// 	variant: 'outlined',
-			// 	label: 'Введите фамилию',
-			// 	errorMessage: 'Введите корректный email',
-			// 	fullWidth: true,
-			// 	valid: false,
-			// 	touched: false,
-			// 	validation: {
-			// 		required: true,
-			// 	}
-			// },
+		formControls: {			
 			email: {
 				value: '',
 				xs: 12,
@@ -84,26 +53,29 @@ class SignIn extends Component {
 					required: true,
 					minLength: 6
 				}
+			},
+			accept: {
+				value: false,
+				valid: true,
+				error: false
 			}
-			// accept: {
-			// 	valid: false
-			// }
 		}
 	};
 
-	loginHandler = () => {	
-		const formControls = {...this.state.formControls} ;
+	loginHandler = () => {
+		const formControls = { ...this.state.formControls };
 		Object.keys(formControls).forEach(name => {
 			formControls[name].error = !this.state.isFormValid;
 		});
 		this.setState({
-			formControls,			
+			formControls
 		});
 		if (this.state.isFormValid && this.props.token === null) {
 			this.props.auth(
 				this.state.formControls.email.value,
 				this.state.formControls.password.value,
-				true
+				true,
+				this.state.formControls.accept.value
 			);
 		}
 	};
@@ -135,8 +107,8 @@ class SignIn extends Component {
 		const formControls = { ...this.state.formControls };
 		if (controlName === 'accept') {
 			const control = formControls[controlName];
-			control.valid = event.target.checked;
-		} else {
+			control.value = event.target.checked;
+		} else {			
 			const control = { ...formControls[controlName] };
 			control.touched = true;
 			control.value = event.target.value;
@@ -159,7 +131,10 @@ class SignIn extends Component {
 	};
 
 	renderInputs() {
-		return Object.keys(this.state.formControls).map((controlName, index) => {
+		return Object.keys(this.state.formControls).map((controlName, index) => {			
+			if (controlName === 'accept') {
+				return null;
+			}
 			const control = this.state.formControls[controlName];
 
 			return (
@@ -186,7 +161,7 @@ class SignIn extends Component {
 
 	render() {
 		return (
-			<Container component='main' maxWidth='xs'>
+			<Container component='section' maxWidth='xs'>
 				<CssBaseline />
 				<div className={classes.paper}>
 					<Avatar className={classes.avatar}>
@@ -201,7 +176,7 @@ class SignIn extends Component {
 						<Grid container spacing={2}>
 							{this.renderInputs()}
 
-							{/* <Grid item xs={12}>
+							<Grid item xs={12}>
 								<FormControlLabel
 									control={
 										<Checkbox
@@ -212,7 +187,7 @@ class SignIn extends Component {
 									}
 									label='Remember me'
 								/>
-							</Grid> */}
+							</Grid>
 						</Grid>
 						<Button
 							type='submit'

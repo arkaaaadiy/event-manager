@@ -4,7 +4,7 @@ import {
     AUTH_SUCCESS
 } from "./ActionType"
 
-export function auth(email, password, isLogin) {
+export function auth(email, password, isLogin, remember = false) {
     return async dispatch => {
         const authData = {
             email,
@@ -24,9 +24,15 @@ export function auth(email, password, isLogin) {
         localStorage.setItem('token', data.idToken)
         localStorage.setItem('userId', data.localId)
         localStorage.setItem('expirationDate', expirationDate)
+        localStorage.setItem('remember', remember)
+        
 
         dispatch(authSuccess(data.idToken, data.localId))
-        dispatch(autoLogout(3600))
+        if (!remember) {
+            dispatch(autoLogout(3600))           
+        }
+        
+        
     }
 }
 
@@ -50,6 +56,7 @@ export function logout() {
     localStorage.removeItem('token')
     localStorage.removeItem('userId')
     localStorage.removeItem('expirationDate')
+    localStorage.removeItem('remember')
     return {
         type: AUTH_LOGOUT
     }
@@ -59,6 +66,7 @@ export function autoLogin() {
         return new Promise(function (resolve, reject) {
                 const token = localStorage.getItem('token')
                 const userId = localStorage.getItem('userId')
+                const remember = localStorage.getItem('remember')
                 if (!token) {
                     dispatch(logout())
                     reject()
@@ -69,7 +77,10 @@ export function autoLogin() {
                         reject()
                     } else {
                         dispatch(authSuccess(token, userId))
-                        dispatch(autoLogout((expirationDate.getTime() - new Date().getTime()) / 1000))
+                        if (!remember) {
+                            dispatch(autoLogout((3600)))
+                            debugger
+                        }                        
                         resolve()
                     }
                 }
