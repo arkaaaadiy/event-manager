@@ -27,7 +27,7 @@ class Home extends Component {
 	}
 	render() {
 		return (
-			<Container maxWidth='md'>
+			<Container maxWidth='md' disableGutters>
 				<Box mt={3}>
 					{this.props.loading ? (
 						<div className={classes.loading}>

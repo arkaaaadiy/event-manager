@@ -25,6 +25,12 @@ class EventList extends Component {
 		this.props.deleteUserEvent(id);
 	};
 	renderEvent() {
+		if (this.props.events.length === 0) {
+			return (<Typography variant='subtitle1' component='p' align='center'>
+				Список событий пока пуст.<Link to='/create-event'>Добавить</Link>
+			</Typography>)
+		}
+		 
 		return this.props.events.map(event => {
 			return (
 				<InsetDividers
@@ -42,7 +48,7 @@ class EventList extends Component {
 
 	render() {
 		return (
-			<Container>
+			<Container disableGutters maxWidth='md'>
 				<Box p={2}>
 					<Typography variant='h4' component='h1' align='center'>
 						Список событий
@@ -52,13 +58,7 @@ class EventList extends Component {
 					<div className={classes.loading}>
 						<CircularProgress size={100} />
 					</div>
-				) : this.props.events.length !== 0 ? (
-					this.renderEvent()
-				) : (
-					<Typography variant='subtitle1' component='p' align='center'>
-						Список событий пока пуст.<Link to='/create-event'>Добавить</Link>
-					</Typography>
-				)}
+				) : this.renderEvent()}
 			</Container>
 		);
 	}

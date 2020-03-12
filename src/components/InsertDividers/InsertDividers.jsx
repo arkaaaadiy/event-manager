@@ -16,11 +16,13 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: theme.palette.background.paper
     },
     description: {
-
         [theme.breakpoints.down('xs')]: {
             display: 'none',
           },
-    }
+	},
+	name: {
+		flex: '1 0 33%'
+	}
 }));
 
 export default function InsetDividers(props) {
@@ -35,7 +37,7 @@ export default function InsetDividers(props) {
 						<DateRangeIcon />
 					</Avatar>
 				</ListItemAvatar>
-				<ListItemText primary={props.name} secondary={props.date} />
+				<ListItemText className={classes.name} primary={props.name} secondary={props.date} />
 				<ListItemText className={classes.description} primary={props.description}  />				
 				<Tooltip title='Delete'>
 					<IconButton aria-label='delete' onClick={()=>props.onDeleteUserEvent(props.id)} >

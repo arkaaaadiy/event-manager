@@ -20,7 +20,10 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('xs')]: {
             display: 'none',
           },
-    }
+	},
+	name: {
+		flex: '1 0 33%'
+	}
 }));
 
 export default function InsetDividers(props) {
@@ -35,7 +38,7 @@ export default function InsetDividers(props) {
 						<DateRangeIcon />
 					</Avatar>
 				</ListItemAvatar>
-				<ListItemText primary={props.name} secondary={props.date} />
+				<ListItemText className={classes.name} primary={props.name} secondary={props.date} />
 				<ListItemText className={classes.description} primary={props.description}  />				
 				<Tooltip title='Add'>
 					<IconButton aria-label='add' onClick={()=>props.onDeleteUserEvent(props.id)} >
