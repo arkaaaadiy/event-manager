@@ -1,35 +1,44 @@
 import Axios from "axios"
 import {
     AUTH_LOGOUT,
-    AUTH_SUCCESS
+    AUTH_SUCCESS,
+    AUTH_ERROR,
+    AUTH_CLEAR_ERROR
 } from "./ActionType"
 
 export function auth(email, password, isLogin, remember = false) {
     return async dispatch => {
-        const authData = {
-            email,
-            password,
-            returnSectureToken: true
-        }
-        let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBr6tg27M3PQOCj4D_jNvaZrghAvQ7IySQ'
-        if (isLogin) {
-            url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBr6tg27M3PQOCj4D_jNvaZrghAvQ7IySQ'
-        }
-
-        const response = await Axios.post(url, authData)
-        const data = response.data
-
-        const expirationDate = new Date(new Date().getTime() + 3600 * 1000)
-
-        localStorage.setItem('token', data.idToken)
-        localStorage.setItem('userId', data.localId)
-        localStorage.setItem('expirationDate', expirationDate)
-        localStorage.setItem('remember', remember)
-        
-
-        dispatch(authSuccess(data.idToken, data.localId))
-        if (!remember) {
-            dispatch(autoLogout(3600))           
+        try {
+            const authData = {
+                email,
+                password,
+                returnSectureToken: true
+            }
+            let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBr6tg27M3PQOCj4D_jNvaZrghAvQ7IySQ'
+            if (isLogin) {
+                url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBr6tg27M3PQOCj4D_jNvaZrghAvQ7IySQ'
+            }
+    
+            const response = await Axios.post(url, authData)
+            const data = response.data
+    
+            const expirationDate = new Date(new Date().getTime() + 3600 * 1000)
+    
+            localStorage.setItem('token', data.idToken)
+            localStorage.setItem('userId', data.localId)
+            localStorage.setItem('expirationDate', expirationDate)
+            localStorage.setItem('remember', remember)
+            
+    
+            dispatch(authSuccess(data.idToken, data.localId))
+            if (!remember) {
+                dispatch(autoLogout(3600))           
+            }
+        } catch (e) {            
+            dispatch(authError(e.response.data.error.message))
+            setTimeout(() => {
+                dispatch(authClearError())
+            }, 4000);
         }
         
         
@@ -43,7 +52,17 @@ export function authSuccess(token, localId) {
         localId
     }
 }
-
+function authClearError() {
+    return {
+        type: AUTH_CLEAR_ERROR
+    }
+}
+function authError(error) {    
+    return {
+        type: AUTH_ERROR,
+        error
+    }
+}
 export function autoLogout(time) {
     return dispatch => {
         setTimeout(() => {

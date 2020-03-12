@@ -1,8 +1,14 @@
-import { AUTH_SUCCESS, AUTH_LOGOUT } from "../actions/ActionType";
+import {
+    AUTH_SUCCESS,
+    AUTH_LOGOUT,
+    AUTH_ERROR,
+    AUTH_CLEAR_ERROR
+} from "../actions/ActionType";
 
 const initialState = {
     token: null,
-    userId: null
+    userId: null,
+    error: null
 }
 
 export default function authReducer(state = initialState, action) {
@@ -11,18 +17,29 @@ export default function authReducer(state = initialState, action) {
             return {
                 ...state,
                 token: action.token,
-                userId: action.localId
+                    userId: action.localId
             }
-            
-        case AUTH_LOGOUT:
-            return {
-                ...state,
-                token: null,
-                userId: null
-            }
-            
-    
-        default:
-            return state;
+
+            case AUTH_LOGOUT:
+                return {
+                    ...state,
+                    token: null,
+                        userId: null
+                }
+
+                case AUTH_ERROR:
+                    return {
+                        ...state,
+                        error: action.error
+                    }
+                case AUTH_CLEAR_ERROR:
+                    return {
+                        ...state,
+                        error: null
+                    }
+
+
+                    default:
+                        return state;
     }
 }

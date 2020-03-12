@@ -3,13 +3,13 @@ import Layout from './hoc/Layout/Layout';
 import { Switch, Route, Redirect, withRouter } from 'react-router';
 import Home from './containers/Home/Home';
 import EventList from './containers/EventList/EventList';
-import SignIn from './containers/Auth/SignIn'
-import SignUp from './containers/Auth/SignUp'
 import { StylesProvider } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import {initializeApp} from './store/actions/app'
 import EventCreator from './containers/EventCreator/EventCreator';
 import { CircularProgress } from '@material-ui/core';
+import LoginForm from './containers/Auth/LoginForm';
+import RegisterForm from './containers/Auth/RegisterForm';
 
 
 class App extends Component{
@@ -21,8 +21,8 @@ class App extends Component{
   render() {
     let routes = (
       <Switch>
-        <Route path='/sign-in' component={SignIn} />
-        <Route path='/sign-up' component={SignUp} /> 
+        <Route path='/sign-in' component={LoginForm} />
+        <Route path='/sign-up' component={RegisterForm} /> 
         <Route path='/' exact component={Home} />
         <Redirect to='/' />
       </Switch>
